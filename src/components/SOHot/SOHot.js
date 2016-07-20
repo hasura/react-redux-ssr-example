@@ -11,19 +11,11 @@ class SOHot extends React.Component {
   };
 
   componentWillMount() {
-    if (__CLIENT__) {
-      const { dispatch } = this.props;
-      if (!isLoaded(this.props)) {
-        SOHot.fetchData({ }, { dispatch }).then(() => {});
-      }
+    const { dispatch } = this.props;
+    if (!isLoaded(this.props)) {
+      dispatch(loadResults());
     }
   }
-
-  static fetchData = (params, store) => {
-    return Promise.all([
-      store.dispatch(loadResults())
-    ]);
-  };
 
   render() {
     const { questions } = this.props;

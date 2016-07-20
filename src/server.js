@@ -65,18 +65,30 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
-        // Parses all the fetchData static function in components
-        const fetchAll = () => {
-          // Uses components in renderProps and parses them
-          const { components, params } = {...renderProps};
-          return components.map(component => component && 
-              component.fetchData instanceof Function && 
-              component.fetchData(params, store, client))
-              .filter(result => result && result.then instanceof Function);
+        
+        // Returns array of fetchData functions
+        const dispatchAll = () => {
+          // For all matched routes make fetchData promises
+          const rp = renderProps;
+          const allActionCreators = rp.routes.reduce((result, route) => {
+            // Server Dispatch Present?
+            const sdPresent = route && route.serverDispatch !== undefined &&
+              route.serverDispatch.filter(sd => (sd instanceof Array));
+
+            return sdPresent ? [...result, ...route.serverDispatch] : result;
+          }, []);
+
+          return allActionCreators;
         };
 
         // Run the promise to fetch all required data.
-        Promise.all(fetchAll()).then(() => {
+        const actionDispatchers = dispatchAll().map(
+          a => store.dispatch(
+            a(renderProps.params ? renderProps.params : undefined)
+          )
+        );
+        // console.log(actionDispatchers);
+        Promise.all(actionDispatchers).then(() => {
           // When all successfully resolved
           const component = ReactDOM.renderToString(
             <Provider store={store} key="provider">

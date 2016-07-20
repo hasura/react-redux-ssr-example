@@ -10,7 +10,7 @@ const load = () => ({
 });
 
 const isLoaded = (componentProps) => (
-  componentProps.questions
+  true && componentProps.questions
 );
 
 const sohotReducer = (state = defaultState, action) => {

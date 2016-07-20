@@ -5,7 +5,6 @@ import { push } from 'react-router-redux';
 import { isLoaded as isLoadedSearch, load as loadResults } from './Actions';
 import SOQuestionsList from '../SOQuestionsList/SOQuestionsList';
 import SOHot from '../SOHot/SOHot';
-import { isLoaded as isLoadedHot, load as loadHot } from '../SOHot/Actions';
 
 class SOSearch extends React.Component {
   static propTypes = {
@@ -15,21 +14,11 @@ class SOSearch extends React.Component {
   };
 
   componentWillMount() {
-    if (__CLIENT__) {
-      const { dispatch, query } = this.props;
-      if (!(isLoadedSearch(this.props) && isLoadedHot())) {
-        SOSearch.fetchData({ query }, { dispatch }).then(() => {});
-        SOHot.fetchData().then(() => {});
-      }
+    const { dispatch, query } = this.props;
+    if (!isLoadedSearch(this.props)) {
+      dispatch(loadResults(query));
     }
   }
-
-  static fetchData = (params, store) => {
-    return Promise.all([
-      store.dispatch(loadResults(params.query)),
-      store.dispatch(loadHot())
-    ]);
-  };
 
   render() {
     const { dispatch, query, questions } = this.props;
