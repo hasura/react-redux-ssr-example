@@ -21,6 +21,12 @@ class SOSearch extends React.Component {
     }
   }
 
+  componentWillUpdate(next) {
+    if (next.params.query && (next.params.query !== this.props.query)) {
+      this.props.dispatch(loadResults({ query: next.params.query }));
+    }
+  }
+
   render() {
     const { dispatch, query, questions } = this.props;
     return (
@@ -31,7 +37,6 @@ class SOSearch extends React.Component {
             (e) => {
               e.preventDefault();
               dispatch(push('/sosearch/' + e.target.value));
-              dispatch(loadResults({ query: e.target.value }));
             }
           } value={query} />
           <SOQuestionsList questions={questions} />
