@@ -65,7 +65,6 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
-        
         // Returns array of fetchData functions
         const dispatchAll = () => {
           // For all matched routes make fetchData promises
@@ -98,7 +97,11 @@ app.use((req, res) => {
 
           global.navigator = {userAgent: req.headers['user-agent']};
 
-          res.status(200);
+          if (renderProps.routes[1].path === '*') {
+            res.status(404);
+          } else {
+            res.status(200);
+          }
 
           res.send('<!DOCTYPE html>\n' +
             ReactDOM.renderToStaticMarkup(<Html assets={webpackIsomorphicTools.assets()} component={component} initialStore={store.getState()} />));
