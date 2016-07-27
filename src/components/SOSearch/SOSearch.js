@@ -10,7 +10,8 @@ class SOSearch extends React.Component {
   static propTypes = {
     query: React.PropTypes.string.isRequired,
     questions: React.PropTypes.array.isRequired,
-    dispatch: React.PropTypes.func.isRequired
+    dispatch: React.PropTypes.func.isRequired,
+    loading: React.PropTypes.bool
   };
 
   componentWillMount() {
@@ -28,7 +29,7 @@ class SOSearch extends React.Component {
   }
 
   render() {
-    const { dispatch, query, questions } = this.props;
+    const { dispatch, query, questions, loading } = this.props;
     return (
       <div>
         <div className="col-md-8">
@@ -40,7 +41,12 @@ class SOSearch extends React.Component {
               dispatch(loadResults({ query: e.target.value }));
             }
           } value={query} />
-          <SOQuestionsList questions={questions} />
+          {
+            (loading) ?
+              <p>Loading...</p>
+            :
+              <SOQuestionsList questions={questions} />
+          }
         </div>
         <div className="col-md-4">
           <SOHot />
