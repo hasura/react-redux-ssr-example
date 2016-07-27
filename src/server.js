@@ -65,6 +65,15 @@ app.use((req, res) => {
       res.status(500);
       hydrateOnClient();
     } else if (renderProps) {
+
+        // Last matched route
+        const lastRoute = renderProps.routes[renderProps.routes.length - 1];
+        let status = 200;
+        // If path == * then 404 page
+        if (lastRoute.path == '*') {
+          status = 404;
+        }
+
         // Returns array of fetchData functions
         const dispatchAll = () => {
           // For all matched routes make fetchData promises
@@ -97,11 +106,7 @@ app.use((req, res) => {
 
           global.navigator = {userAgent: req.headers['user-agent']};
 
-          if (renderProps.routes[1].path === '*') {
-            res.status(404);
-          } else {
-            res.status(200);
-          }
+          res.status(status);
 
           res.send('<!DOCTYPE html>\n' +
             ReactDOM.renderToStaticMarkup(<Html assets={webpackIsomorphicTools.assets()} component={component} initialStore={store.getState()} />));

@@ -16,8 +16,8 @@ const routes = (history) => {
         <IndexRoute component={Example}/>
         <Route path="sosearch/:query" component={SOSearch} serverDispatch={[loadResults]}/>
       </Route>
-      <Route path="*" component={NotFound} />
-      {/* <Redirect from="*" to="/"/> */}
+      {/* Any route with path = "*" is set a 404 response on server rendering. */}
+      <Route path="*" component={NotFound}/>
     </Router>
   );
 };

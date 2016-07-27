@@ -1,14 +1,22 @@
 import React from 'react';
+import { connect } from 'react-redux';
+// import { replace } from 'react-router-redux';
 
-const NotFound = () => {
-  return (
-    /* Use global styles normally */
-    <div className="container-fluid">
-      {/* Use CSS Modules to use the local styles */}
-      <h1>401 iruku saar</h1>
-      <div>The path you request is not found.</div>
-    </div>
-  );
-};
+class NotFound extends React.Component {
+  static propTypes = {
+    dispatch: React.PropTypes.func.isRequired
+  }
 
-export default NotFound;
+  // componentDidMount() {
+  //   const { dispatch } = this.props;
+  //   dispatch(replace('/'));
+  // }
+
+  render() {
+    return (
+      <span>Not Found.</span>
+    );
+  }
+}
+
+export default connect()(NotFound);
