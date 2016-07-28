@@ -69,7 +69,7 @@ const mapStateToProps = (state, ownProps) => (
     query: ownProps.params ? ownProps.params.query : state.sosearch.data.query,
     questions: state.sosearch.data.results,
     loaded: state.sosearch.loaded,
-    loading: state.sosearch.loading
+    loading: state.sosearch.loading || false
   }
 );
 
