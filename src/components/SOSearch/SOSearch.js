@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
 import { load as loadResults } from './Actions';
@@ -22,6 +23,7 @@ class SOSearch extends React.Component {
     }
   }
 
+  // IMPORTANT: Used when we show the same component with different props
   componentWillUpdate(next) {
     if (next.query !== '' && (next.query !== this.props.query)) {
       next.dispatch(loadResults({ query: next.query }));
@@ -34,6 +36,12 @@ class SOSearch extends React.Component {
       <div>
         <div className="col-md-8">
           <h3>Search StackOverflow</h3>
+          <p>
+            Example Searches:
+            <Link to="/sosearch/Hello">Hello</Link>
+            <Link to="/sosearch/World">World</Link>
+            <Link to="/sosearch/React">React</Link>
+          </p>
           <input type="text" name="search" onChange={
             (e) => {
               e.preventDefault();
